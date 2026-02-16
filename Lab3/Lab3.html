@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 3 - CSS Selectors</title>
+  <style>
+    p > span { color: red; }
+    #header span { color: pink; }
+    span { color: green; }
+    #header *:last-child { color: orange; }
+    #header span:first-child:hover { color: blue; }
+  </style>
+</head>
+<body>
+<h1>Lab 3 CSS </h1>
+  <div class="image-preview">
+    <img src="https://cpit405.gitlab.io/images/KAU_logo.png" 
+    style="
+    width: 250px;
+    border-style: solid; 
+    border-width: 25px; 
+    border-top-color: skyblue; 
+    border-right-color: lightpink; 
+    border-bottom-color: lightgreen; 
+    border-left-color: #ffefd5;"
+    >
+  </div>
+
+  <div id="header">
+    <span class="myclass1">Every</span>
+    <span class="myclass2">one can</span>
+    <span class="myclass3">success.</span>
+  </div>
+  <p> One machine can do the work of fifty ordinary men.
+    <span class="myclass4">No machine can do the work of one extraordinary man.</span>
+  </p>
+
+
+
+  <table>
+    <thead>
+      <th></th>
+      <th>color</th>
+      <th>color when mouse over</th>
+    </thead>
+    <tbody>
+    <tr>
+      <td>span.myclass1</td>
+      <td>pink</td>
+      <td>blue</td>
+    </tr>
+    <tr>
+      <td>span.myclass2</td>
+      <td>pink</td>
+      <td>pink</td>
+    </tr>
+    <tr>
+      <td>span.myclass3</td>
+      <td>orange</td>
+      <td>orange</td>
+    </tr>
+    <tr>
+      <td>span.myclass4</td>
+      <td>red</td>
+      <td>red</td>
+    </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
