@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 6 </title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>CPIT405 - Lab 6</h1>
+
+    <button id="reset-btn" onclick="resetAll()">Reset</button>
+  </div>
+  <hr>
+  <div class="body">
+    <div class="left-col">
+      <div class="vote-row">
+        <button class="vote-btn" id="like-btn" onclick="vote('like')">
+          <span>👍</span>
+          <span class="vote-label">Like</span>
+          <span class="vote-count" id="like-count"></span>
+        </button>
+        
+        <button class="vote-btn" id="dislike-btn" onclick="vote('dislike')">
+          <span>👎</span>
+          <span class="vote-label">Dislike</span>
+          <span class="vote-count" id="dislike-count"></span>
+        </button>
+      </div>
+      <p class="vote-status" id="vote-status"></p>
+    </div>
+
+    <div class="Vertical-line"></div>
+
+    <div class="right-col">
+      <div class="comment-row">
+        <input type="text" id="comment-input" placeholder="Write a comment…" maxlength="200" />
+        <button id="submit-btn" onclick="submitComment()">Send</button>
+      </div>
+
+      <ul id="comments-list"></ul>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
