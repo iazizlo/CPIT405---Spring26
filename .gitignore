@@ -1,5 +1,4 @@
 .DS_Store
-.DS_Store
 
 .vscode/
 .idea/
@@ -8,3 +7,5 @@
 
 *.log
 
+node_modules/
+dist/
