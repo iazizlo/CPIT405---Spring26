@@ -164,6 +164,11 @@ footer {
     padding: 1.1rem;
 }
 
+.btn-sm {
+    font-size: 0.88rem;
+    padding: 0.6rem 1.4rem;
+}
+
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);

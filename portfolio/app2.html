@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Explorer | Abdulaziz Almutairi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        .app-header {
+            text-align: center;
+            padding: 2.5rem 0 1.75rem;
+        }
+
+        /* ── Controls ── */
+        .controls-bar {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .ctrl-input {
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            width: 200px;
+        }
+
+        .ctrl-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+        }
+
+        .ctrl-select {
+            padding: 0.6rem 1rem;
+            padding-right: 2.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+        }
+
+        .ctrl-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+        }
+
+        .random-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .random-btn:hover { background: var(--primary-hover); }
+        .random-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        /* ── Random spotlight ── */
+        .spotlight {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: fade-left 0.3s ease forwards;
+        }
+
+        .spotlight.visible { display: flex; }
+
+        .spotlight-char {
+            font-size: 3.5rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .spotlight-info { flex: 1; }
+
+        .spotlight-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .spotlight-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: capitalize;
+            margin-bottom: 0.2rem;
+        }
+
+        .spotlight-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
+
+        .spotlight-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            padding: 0.25rem;
+            transition: color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .spotlight-close:hover { color: var(--primary); }
+
+        /* ── Results meta ── */
+        .results-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* ── Emoji grid ── */
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            gap: 0.9rem;
+        }
+
+        .emoji-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.1rem 0.75rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .emoji-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .emoji-char {
+            font-size: 2.25rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .emoji-name {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: capitalize;
+            line-height: 1.35;
+            font-weight: 500;
+        }
+
+        /* ── Load More ── */
+        .load-more-wrap {
+            text-align: center;
+            margin-top: 1.75rem;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.75rem;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .load-more-btn:hover {
+            border-color: var(--primary);
+            background: rgba(30, 41, 59, 0.05);
+        }
+
+        /* ── Loading / Error ── */
+        .state-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            gap: 1rem;
+            color: var(--text-muted);
+        }
+
+        .spinner-lg {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.75s linear infinite;
+        }
+
+        .error-icon { font-size: 3rem; color: #c0392b; }
+
+        .results-note {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1.25rem;
+        }
+
+        .results-note a { color: var(--primary); }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo"><img src="../img/azizlogo.png" alt="logo"></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="myworks.html" class="active">My Works</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="app-header">
+            <h1 class="section-title">Emoji Explorer</h1>
+            <p class="section-subtitle mt-1">Browse &amp; discover emojis powered by <a href="https://emojihub.yurace.pro" target="_blank" style="color:var(--primary)">EmojiHub API</a></p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-bar">
+            <input
+                type="text"
+                id="searchInput"
+                class="ctrl-input"
+                placeholder="&#128269; Search by name…"
+                oninput="applyFilters()"
+                aria-label="Search emojis"
+            >
+            <select id="categorySelect" class="ctrl-select" onchange="loadCategory()" aria-label="Category">
+                <option value="all">All Categories</option>
+                <option value="smileys-and-people">Smileys &amp; People</option>
+                <option value="animals-and-nature">Animals &amp; Nature</option>
+                <option value="food-and-drink">Food &amp; Drink</option>
+                <option value="travel-and-places">Travel &amp; Places</option>
+                <option value="activities">Activities</option>
+                <option value="objects">Objects</option>
+                <option value="symbols">Symbols</option>
+                <option value="flags">Flags</option>
+            </select>
+            <button class="random-btn" id="randomBtn" onclick="fetchRandom()">
+                🎲 Surprise Me
+            </button>
+        </div>
+
+        <!-- Random spotlight -->
+        <div class="spotlight" id="spotlight">
+            <div class="spotlight-char" id="spotlightChar"></div>
+            <div class="spotlight-info">
+                <div class="spotlight-label">Random pick</div>
+                <div class="spotlight-name" id="spotlightName"></div>
+                <div class="spotlight-meta" id="spotlightMeta"></div>
+            </div>
+            <button class="spotlight-close" onclick="closeSpotlight()" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <!-- Output -->
+        <div id="results-meta" class="results-meta"></div>
+        <div id="emoji-output"></div>
+        <div id="load-more-wrap"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Abdulaziz Almutairi | CPIT-405 portfolio</p>
+    </footer>
+
+    <script>
+        const PAGE_SIZE = 24;
+        let allEmojis = [];
+        let filtered = [];
+        let showing = PAGE_SIZE;
+
+        function emojiChar(htmlCodes) {
+            const span = document.createElement('span');
+            span.innerHTML = (htmlCodes || []).join('');
+            return span.textContent || htmlCodes[0];
+        }
+
+        function renderLoading(msg = 'Loading emojis…') {
+            document.getElementById('emoji-output').innerHTML = `
+                <div class="state-box">
+                    <div class="spinner-lg"></div>
+                    <p>${msg}</p>
+                </div>`;
+            document.getElementById('results-meta').textContent = '';
+            document.getElementById('load-more-wrap').innerHTML = '';
+        }
+
+        function renderError(msg) {
+            document.getElementById('emoji-output').innerHTML = `
+                <div class="state-box">
+                    <div class="error-icon"><i class="bi bi-emoji-frown"></i></div>
+                    <p style="font-weight:600;color:var(--text-main)">Could not load emojis</p>
+                    <p style="font-size:0.85rem">${msg}</p>
+                    <button onclick="loadCategory()" style="
+                        margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;
+                        padding:0.6rem 1.5rem;border-radius:10px;background:var(--primary);
+                        color:white;border:none;font-family:Outfit,sans-serif;font-size:0.9rem;
+                        font-weight:600;cursor:pointer">
+                        <i class="bi bi-arrow-clockwise"></i> Try Again
+                    </button>
+                </div>`;
+            document.getElementById('results-meta').textContent = '';
+            document.getElementById('load-more-wrap').innerHTML = '';
+        }
+
+        function renderGrid() {
+            const slice = filtered.slice(0, showing);
+
+            document.getElementById('results-meta').textContent =
+                `Showing ${slice.length} of ${filtered.length} emoji${filtered.length !== 1 ? 's' : ''}`;
+
+            if (slice.length === 0) {
+                document.getElementById('emoji-output').innerHTML = `
+                    <div class="state-box">
+                        <div style="font-size:3rem">🔍</div>
+                        <p>No emojis match your search.</p>
+                    </div>`;
+                document.getElementById('load-more-wrap').innerHTML = '';
+                return;
+            }
+
+            const cards = slice.map(e => {
+                const char = emojiChar(e.htmlCode);
+                return `
+                    <div class="emoji-card" title="${e.name}">
+                        <span class="emoji-char">${char}</span>
+                        <div class="emoji-name">${e.name}</div>
+                    </div>`;
+            }).join('');
+
+            document.getElementById('emoji-output').innerHTML =
+                `<div class="emoji-grid">${cards}</div>
+                 <p class="results-note">Data by <a href="https://emojihub.yurace.pro" target="_blank">EmojiHub</a></p>`;
+
+            const hasMore = showing < filtered.length;
+            document.getElementById('load-more-wrap').innerHTML = hasMore
+                ? `<div class="load-more-wrap">
+                       <button class="load-more-btn" onclick="loadMore()">
+                           <i class="bi bi-chevron-down"></i> Load More
+                       </button>
+                   </div>`
+                : '';
+        }
+
+        function applyFilters() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            filtered = q
+                ? allEmojis.filter(e => e.name.toLowerCase().includes(q))
+                : allEmojis;
+            showing = PAGE_SIZE;
+            renderGrid();
+        }
+
+        function loadMore() {
+            showing += PAGE_SIZE;
+            renderGrid();
+        }
+
+        async function loadCategory() {
+            const cat = document.getElementById('categorySelect').value;
+            const url = cat === 'all'
+                ? 'https://emojihub.yurace.pro/api/all'
+                : `https://emojihub.yurace.pro/api/all/category/${cat}`;
+
+            document.getElementById('searchInput').value = '';
+            renderLoading();
+
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`Server error (${res.status})`);
+                allEmojis = await res.json();
+                filtered = allEmojis;
+                showing = PAGE_SIZE;
+                renderGrid();
+            } catch (err) {
+                renderError(err.message || 'Network error.');
+            }
+        }
+
+        async function fetchRandom() {
+            const btn = document.getElementById('randomBtn');
+            btn.disabled = true;
+            btn.textContent = '…';
+
+            try {
+                const res = await fetch('https://emojihub.yurace.pro/api/random');
+                if (!res.ok) throw new Error(`Server error (${res.status})`);
+                const e = await res.json();
+
+                document.getElementById('spotlightChar').innerHTML = (e.htmlCode || []).join('');
+                document.getElementById('spotlightName').textContent = e.name;
+                document.getElementById('spotlightMeta').textContent =
+                    `${e.category}  ·  ${e.group}  ·  ${(e.unicode || []).join(', ')}`;
+
+                const spot = document.getElementById('spotlight');
+                spot.classList.add('visible');
+                spot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } catch (err) {
+                alert('Could not fetch a random emoji: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🎲 Surprise Me';
+            }
+        }
+
+        function closeSpotlight() {
+            document.getElementById('spotlight').classList.remove('visible');
+        }
+
+        loadCategory();
+    </script>
+</body>
+
+</html>

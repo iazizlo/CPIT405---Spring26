@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Flashcard Quiz | Abdulaziz Almutairi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="script.js" defer></script>
+    <style>
+        .app-header {
+            text-align: center;
+            padding: 2.5rem 0 1.5rem;
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 0.45rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .progress-section {
+            max-width: 620px;
+            margin: 0 auto 1.75rem;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .progress-bar-bg {
+            height: 5px;
+            background: var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+
+        .quiz-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        .card-scene {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 620px;
+            height: 300px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+
+        .card-3d.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-front {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .card-front .category-tag {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.5rem;
+            font-size: 0.73rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .card-front .flip-hint {
+            position: absolute;
+            bottom: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card-front h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.55;
+        }
+
+        .card-back {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back .answer-label {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.5rem;
+            font-size: 0.73rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.55;
+        }
+
+        .card-back p {
+            font-size: 1rem;
+            line-height: 1.75;
+            opacity: 0.93;
+        }
+
+        .answer-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-know,
+        .btn-dont {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-know {
+            background: #1a7a4a;
+            color: white;
+        }
+
+        .btn-know:hover {
+            background: #155f3a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 122, 74, 0.3);
+        }
+
+        .btn-dont {
+            background: #c0392b;
+            color: white;
+        }
+
+        .btn-dont:hover {
+            background: #922b21;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(192, 57, 43, 0.3);
+        }
+
+        .flip-instruction {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            justify-content: center;
+        }
+
+        .results-card {
+            text-align: center;
+            max-width: 480px;
+            margin: 2rem auto;
+            padding: 3rem;
+        }
+
+        .results-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-score {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin: 0.75rem 0;
+        }
+
+        .results-stats {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.3rem;
+        }
+
+        .stat-correct .stat-value {
+            color: #1a7a4a;
+        }
+
+        .stat-incorrect .stat-value {
+            color: #c0392b;
+        }
+
+        @media (max-width: 640px) {
+            .card-scene {
+                height: 270px;
+            }
+
+            .card-face {
+                padding: 1.75rem 1.5rem;
+            }
+
+            .card-front h2 {
+                font-size: 1.1rem;
+            }
+
+            .card-back p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo"><img src="../img/azizlogo.png" alt="logo"></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="myworks.html" class="active">My Works</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="root"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Abdulaziz Almutairi | portfolio</p>
+    </footer>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const QUESTIONS = [
+            {
+                id: 1, category: 'JavaScript',
+                question: 'What is a closure in JavaScript?',
+                answer: 'A function that retains access to variables from its outer (enclosing) scope even after the outer function has finished executing.'
+            },
+            {
+                id: 2, category: 'JavaScript',
+                question: 'What does typeof null return, and why?',
+                answer: '"object" — this is a well-known JavaScript bug from its original implementation. null is a primitive value, but the type tag for objects was 0 and null\'s tag was also 0.'
+            },
+            {
+                id: 3, category: 'JavaScript',
+                question: 'What is the difference between == and ===?',
+                answer: '== performs type coercion before comparing values. === (strict equality) checks both value AND type without any coercion — always prefer ===.'
+            },
+            {
+                id: 4, category: 'JavaScript',
+                question: 'What does Promise.all() do?',
+                answer: 'Returns a single promise that resolves when all input promises resolve. If any promise rejects, Promise.all() immediately rejects with that error.'
+            },
+            {
+                id: 5, category: 'JavaScript',
+                question: 'What is event bubbling?',
+                answer: 'When an event fires on an element, it propagates upward through all ancestor elements in the DOM tree, triggering any matching event listeners along the way.'
+            },
+            {
+                id: 6, category: 'React',
+                question: 'What is the Virtual DOM?',
+                answer: 'A lightweight in-memory copy of the real DOM. React compares (diffs) the new Virtual DOM with the previous one to batch and minimize expensive real DOM updates.'
+            },
+            {
+                id: 7, category: 'React',
+                question: 'What is a React Hook?',
+                answer: 'Functions prefixed with "use" that let functional components use state, lifecycle, context, refs, and other React features without writing class components.'
+            },
+            {
+                id: 8, category: 'React',
+                question: 'Why is the key prop important in lists?',
+                answer: 'Keys help React identify which list items changed, were added, or removed, enabling efficient reconciliation and avoiding unnecessary re-renders.'
+            },
+            {
+                id: 9, category: 'React',
+                question: 'When does useEffect run by default?',
+                answer: 'After every render. Pass [] to run only on mount, or [dep] to run on mount and whenever dep changes. The cleanup function runs before the next effect and on unmount.'
+            },
+            {
+                id: 10, category: 'React',
+                question: 'What is JSX?',
+                answer: 'A JavaScript syntax extension resembling HTML. Babel compiles it to React.createElement() calls at build time. It makes component trees readable but is not strictly required.'
+            },
+            {
+                id: 11, category: 'HTML/CSS',
+                question: 'What is the CSS Box Model?',
+                answer: 'Every HTML element is a rectangular box with four layers from inside out: content → padding → border → margin. box-sizing: border-box makes width include padding and border.'
+            },
+            {
+                id: 12, category: 'HTML/CSS',
+                question: 'What does display: flex do?',
+                answer: 'Creates a flex container. Its direct children become flex items that can be aligned, ordered, wrapped, and sized using flexbox properties like justify-content and align-items.'
+            },
+            {
+                id: 13, category: 'HTML/CSS',
+                question: 'What is semantic HTML?',
+                answer: 'Using elements that describe their meaning, such as <header>, <nav>, <main>, <article>, <section>, and <footer>. Improves accessibility, SEO, and code readability.'
+            },
+            {
+                id: 14, category: 'HTML/CSS',
+                question: 'What is CSS specificity?',
+                answer: 'A weight system that determines which CSS rule applies when multiple rules target the same element. Priority: inline > ID > class/attribute > element/pseudo-element.'
+            },
+            {
+                id: 15, category: 'HTML/CSS',
+                question: 'What is the difference between position: relative and position: absolute?',
+                answer: 'relative offsets the element from its normal flow position while keeping its space. absolute removes it from flow and positions it relative to the nearest positioned ancestor.'
+            }
+        ];
+
+        const CATEGORIES = ['All', 'JavaScript', 'React', 'HTML/CSS'];
+
+        function Results({ score, total, onRestart }) {
+            const pct = Math.round((score.right / total) * 100);
+            const emoji = pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '📚';
+            return (
+                <div className="card results-card">
+                    <div className="results-emoji">{emoji}</div>
+                    <h2 style={{ fontSize: '1.5rem' }}>Quiz Complete!</h2>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.35rem' }}>You went through all {total} cards</p>
+                    <div className="results-score">{pct}%</div>
+                    <div className="results-stats">
+                        <div className="stat-item stat-correct">
+                            <div className="stat-value">{score.right}</div>
+                            <div className="stat-label">Knew it</div>
+                        </div>
+                        <div className="stat-item stat-incorrect">
+                            <div className="stat-value">{score.wrong}</div>
+                            <div className="stat-label">Missed</div>
+                        </div>
+                    </div>
+                    <button
+                        onClick={onRestart}
+                        style={{
+                            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                            padding: '0.75rem 2rem', borderRadius: '12px',
+                            background: 'var(--primary)', color: 'white', border: 'none',
+                            fontFamily: 'Outfit, sans-serif', fontSize: '0.95rem',
+                            fontWeight: 600, cursor: 'pointer'
+                        }}
+                    >
+                        <i className="bi bi-arrow-counterclockwise"></i> Try Again
+                    </button>
+                </div>
+            );
+        }
+
+        function App() {
+            const [category, setCategory] = useState('All');
+            const [idx, setIdx] = useState(0);
+            const [flipped, setFlipped] = useState(false);
+            const [score, setScore] = useState({ right: 0, wrong: 0 });
+            const [done, setDone] = useState(false);
+
+            const cards = category === 'All'
+                ? QUESTIONS
+                : QUESTIONS.filter(q => q.category === category);
+
+            const changeCategory = (cat) => {
+                setCategory(cat);
+                setIdx(0);
+                setFlipped(false);
+                setScore({ right: 0, wrong: 0 });
+                setDone(false);
+            };
+
+            const handleAnswer = (correct) => {
+                setScore(s => correct ? { ...s, right: s.right + 1 } : { ...s, wrong: s.wrong + 1 });
+                if (idx + 1 >= cards.length) {
+                    setDone(true);
+                } else {
+                    setIdx(idx + 1);
+                    setFlipped(false);
+                }
+            };
+
+            const restart = () => {
+                setIdx(0);
+                setFlipped(false);
+                setScore({ right: 0, wrong: 0 });
+                setDone(false);
+            };
+
+            const card = cards[idx];
+            const progress = cards.length > 0 ? (idx / cards.length) * 100 : 0;
+
+            return (
+                <div>
+                    <div className="app-header">
+                        <h1 className="section-title">Flashcard Quiz</h1>
+                        <p className="section-subtitle mt-1">Test your web development knowledge</p>
+                    </div>
+
+                    <div className="category-filter">
+                        {CATEGORIES.map(cat => (
+                            <button
+                                key={cat}
+                                className={`category-btn ${category === cat ? 'active' : ''}`}
+                                onClick={() => changeCategory(cat)}
+                            >
+                                {cat === 'All' ? `All (${QUESTIONS.length})` : `${cat} (${QUESTIONS.filter(q => q.category === cat).length})`}
+                            </button>
+                        ))}
+                    </div>
+
+                    {done ? (
+                        <Results score={score} total={cards.length} onRestart={restart} />
+                    ) : (
+                        <div>
+                            <div className="progress-section">
+                                <div className="progress-meta">
+                                    <span>Card {idx + 1} of {cards.length}</span>
+                                    <span>
+                                        <span style={{ color: '#1a7a4a', fontWeight: 600 }}>✓ {score.right}</span>
+                                        &nbsp;&nbsp;
+                                        <span style={{ color: '#c0392b', fontWeight: 600 }}>✗ {score.wrong}</span>
+                                    </span>
+                                </div>
+                                <div className="progress-bar-bg">
+                                    <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+                                </div>
+                            </div>
+
+                            <div className="quiz-layout">
+                                <div
+                                    className="card-scene"
+                                    onClick={() => setFlipped(f => !f)}
+                                    role="button"
+                                    aria-label="Flip flashcard"
+                                >
+                                    <div className={`card-3d ${flipped ? 'flipped' : ''}`}>
+                                        <div className="card-face card-front">
+                                            <span className="category-tag">{card.category}</span>
+                                            <h2>{card.question}</h2>
+                                            <span className="flip-hint">
+                                                <i className="bi bi-arrow-repeat"></i> Click to reveal answer
+                                            </span>
+                                        </div>
+                                        <div className="card-face card-back">
+                                            <span className="answer-label">Answer</span>
+                                            <p>{card.answer}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {flipped ? (
+                                    <div className="answer-btns">
+                                        <button className="btn-know" onClick={() => handleAnswer(true)}>
+                                            <i className="bi bi-check-lg"></i> Knew it
+                                        </button>
+                                        <button className="btn-dont" onClick={() => handleAnswer(false)}>
+                                            <i className="bi bi-x-lg"></i> Missed it
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <p className="flip-instruction">
+                                        <i className="bi bi-hand-index"></i>&nbsp; Tap the card to flip
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
