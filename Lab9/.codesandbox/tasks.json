@@ -1,14 +1,13 @@
 {
-  "$schema": "https://codesandbox.io/schemas/tasks.json",
   "tasks": {
     "install": {
       "name": "Install Dependencies",
-      "command": "npm install",
+      "command": "cd Lab9 && npm install",
       "runAtStart": true
     },
     "dev": {
       "name": "Start Dev Server",
-      "command": "npm run dev",
+      "command": "cd Lab9 && npm run dev",
       "runAtStart": true,
       "preview": {
         "port": 5173
