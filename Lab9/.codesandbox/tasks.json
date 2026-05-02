@@ -9,6 +9,7 @@
       "name": "Start Dev Server",
       "command": "cd Lab9 && npm run dev",
       "runAtStart": true,
+      "dependsOn": ["install"],
       "preview": {
         "port": 5173
       }
