@@ -8,16 +8,18 @@
     <link rel="stylesheet" href="portfolio/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="portfolio/script.js" defer></script>
+
 </head>
 
 <body>
     <header>
-
         <nav>
             <a href="index.html" class="logo"><img src="./img/azizlogo.png" alt="logo"></a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="portfolio/cv.html">CV</a></li>
+                <li><a href="#hero" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
                 <li><a href="portfolio/labs.html">Labs</a></li>
                 <li><a href="portfolio/contact.html">Contact</a></li>
             </ul>
@@ -25,33 +27,25 @@
                 <span></span><span></span><span></span>
             </button>
         </nav>
-
     </header>
 
     <main>
-        <section class="hero">
+
+        <!-- ── Hero ── -->
+        <section class="hero" id="hero">
             <div class="hero-content">
-                <img class="hero-image" src="./img/image.png" alt="btemoji">
-
+                <img class="hero-image" src="./img/2.png" alt="Abdulaziz">
                 <div class="hero-text">
-
                     <h1>Hi, I'm Abdulaziz Almutairi</h1>
-
-                    <p>Senior Information Technology student at KAU with a passion for app
-                        development, UI/UX, and graphic design.</p>
+                    <p>Senior Information Technology student at KAU with a passion for app development, UI/UX, and graphic design.</p>
                     <span class="student-info">ID: 2236678</span>
                     <div class="hero-actions mt-3">
-                        <a href="portfolio/labs.html" class="btn btn-primary">Labs</a>
-                        <a href="portfolio/cv.html" class="btn btn-outline ml-1">About Me</a>
+                        <a href="#projects" class="btn btn-primary">My Projects</a>
+                        <a href="#about" class="btn btn-outline ml-1">About Me</a>
                     </div>
                     <div class="hero-socials">
-                        <a href="https://github.com/iazizlo" target="_blank" title="GitHub">
-                            <i class="bi bi-github"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/abdulaziz-almutairi-9bb08a270/" target="_blank"
-                            title="LinkedIn">
-                            <i class="bi bi-linkedin"></i>
-                        </a>
+                        <a href="https://github.com/iazizlo" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
+                        <a href="https://www.linkedin.com/in/abdulaziz-almutairi-9bb08a270/" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -59,115 +53,160 @@
 
         <div class="section-divider"></div>
 
-        <section id="labs" class="mt-6">
-            <div class="carousel-header">
-                <h2 class="section-title text-left">Course <span class="gradient-text">Labs</span></h2>
-                <div class="carousel-controls">
-                    <button class="control-btn" id="prevBtn" aria-label="Previous Lab">
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button class="control-btn" id="nextBtn" aria-label="Next Lab">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+        <!-- Section 1: About -->
+        <section id="about" class="mt-6">
 
-            <div class="carousel-container" id="labsCarousel">
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 1</div>
-                    </div>
-                    <h3>Setting up web dev environment</h3>
-                    <p>Setting up the development environment for web development.</p>
-                    <div class="lab-footer">
-                        <a href="Lab1/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab1/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
+            <h2 class="section-title text-left reveal">About <span class="gradient-text">Me</span></h2>
+
+            <div class="about-grid">
+
+                <!-- Bio & Education -->
+                <div class="card card-static reveal delay-1">
+                    <h3 class="card-title">Bio</h3>
+                    <p class="about-bio">
+                        Hello! I'm Abdulaziz Almutairi, a Senior Information Technology student at King Abdulaziz University.
+                        I have a strong passion for Software Engineering and UI/UX product design. Currently developing my
+                        senior project, <strong>Takamul</strong> — a platform to enhance student–faculty communication,
+                        to be delivered by the end of this semester.
+                    </p>
+
+                    <div class="edu-block">
+                        <h3 class="card-title">Education</h3>
+                        <strong>Bachelor of Information Technology</strong>
+                        <span>King Abdulaziz University (KAU) &mdash; 2022 – Present</span>
                     </div>
                 </div>
 
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 2</div>
-                    </div>
-                    <h3>HTML Structure</h3>
-                    <p>Learn structure (header & body), common tags, forms, tables, lists, and page layout design.</p>
-                    <div class="lab-footer">
-                        <a href="Lab2/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab2/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                </div>
-
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 3</div>
-                    </div>
-                    <h3>CSS Fundamentals</h3>
-                    <p>Learn styling, selectors, layout, and responsive design.</p>
-                    <div class="lab-footer">
-                        <a href="Lab3/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab3/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                </div>
-
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 4</div>
-                    </div>
-                    <h3>CSS Structure and Properties</h3>
-                    <p>Create an HTML form for placing an order to request auto parts and style it in CSS.</p>
-                    <div class="lab-footer">
-                        <a href="Lab4/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab4/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
+                <!-- Skills -->
+                <div class="card card-static reveal delay-2">
+                    <h3 class="card-title">Skills</h3>
+                    <div class="skills-list">
+                        <div class="skill-group">
+                            <p class="skill-group-title">Programming</p>
+                            <p>Python, JavaScript, Java, Swift</p>
+                        </div>
+                        <div class="skill-group">
+                            <p class="skill-group-title">Web Development</p>
+                            <p>PHP, HTML, CSS, React</p>
+                        </div>
+                        <div class="skill-group">
+                            <p class="skill-group-title">Tools</p>
+                            <p>Git & GitHub, Figma</p>
+                        </div>
+                        <div class="skill-group">
+                            <p class="skill-group-title">Soft Skills</p>
+                            <p>Problem Solving, Teamwork & Collaboration, Communication, Time Management</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 5</div>
-                    </div>
-                    <h3>DOM API and JS Events</h3>
-                    <p>create an interactive NBA Player Stats Dashboard using JavaScript, the DOM API, and CSS. This
-                        project will demonstrate JS event types...</p>
-                    <div class="lab-footer">
-                        <a href="lab-05/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="lab-05/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                </div>
-
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 6</div>
-                    </div>
-                    <h3>JavaScript</h3>
-                    <p>learn how to handle events in JavaScript Work with the DOM API to find and modify elements learn
-                        how to use cookies</p>
-                    <div class="lab-footer">
-                        <a href="Lab6/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab6/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                </div>
-
-                <div class="lab-item card">
-                    <div class="lab-id-wrapper">
-                        <div class="lab-id">LAB 7</div>
-                    </div>
-                    <h3>Asynchronous JS</h3>
-                    <p>Consume the Unsplash REST API using XHR, fetch with promises, and fetch with async/await to search and display photos.</p>
-                    <div class="lab-footer">
-                        <a href="Lab7/index.html" class="lab-link">GitHub <i class="bi bi-github"></i></a>
-                        <a href="Lab7/index.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                </div>
             </div>
         </section>
 
+        <div class="section-divider"></div>
 
+        <!--  Section 2: Experience  -->
+        <section id="experience" class="mt-6">
+
+            <h2 class="section-title text-left reveal">Experience </h2>
+
+            <div class="card card-static reveal delay-1">
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p class="timeline-date">Jun 2025 – Aug 2025</p>
+                    <p class="timeline-title">Intern</p>
+                    <p class="timeline-subtitle">Center of Excellence in High Performance Computing (CEHPC) &mdash; Jeddah</p>
+                    <ul class="timeline-body">
+                        <li>Gained practical experience in Linux system administration and HPC cluster management</li>
+                        <li>Learned about cluster architecture, networking, shared storage (NFS), and service configuration</li>
+                        <li>Automated node setup using Bash scripts for networking, SSH, NFS, and PBS MOM</li>
+                    </ul>
+                </div>
+
+            </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!--  Section 3: Projects  -->
+        <section id="projects" class="mt-6">
+
+            <div class="carousel-header">
+                <h2 class="section-title text-left reveal">My <span class="gradient-text">Projects</span></h2>
+                <a href="portfolio/myworks.html" class="btn btn-outline btn-sm reveal">
+                    View All <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="projects-grid">
+
+                <div class="project-card card reveal delay-1">
+                    <p class="project-number">App 01 — No External API</p>
+                    <h3>Flashcard Quiz</h3>
+                    <p>A React-powered flashcard quiz covering JavaScript, React, and HTML/CSS. Flip cards, track your score, and filter by category.</p>
+                    <div class="ptag-row">
+                        <span class="ptag">React</span>
+                        <span class="ptag">JavaScript</span>
+                        <span class="ptag">CSS</span>
+                    </div>
+                    <div class="lab-footer">
+                        <a href="portfolio/app1.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="project-card card reveal delay-2">
+                    <p class="project-number">App 02 — Public API</p>
+                    <h3>Emoji Explorer</h3>
+                    <p>Browse and discover emojis using the EmojiHub API. Filter by category, search by name, or hit "Surprise Me" for a random emoji.</p>
+                    <div class="ptag-row">
+                        <span class="ptag">Fetch API</span>
+                        <span class="ptag">EmojiHub</span>
+                        <span class="ptag">JavaScript</span>
+                    </div>
+                    <div class="lab-footer">
+                        <a href="portfolio/app2.html" class="lab-link">Demo <i class="bi bi-box-arrow-up-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="project-card card reveal delay-3">
+                    <p class="project-number">App 03 — PHP CRUD</p>
+                    <h3>Product Manager</h3>
+                    <p>A PHP product management app using SQLite. Full CRUD operations — view, add, edit, and delete products — plus a JSON API endpoint.</p>
+                    <div class="ptag-row">
+                        <span class="ptag">PHP</span>
+                        <span class="ptag">SQLite</span>
+                        <span class="ptag">Bootstrap</span>
+                    </div>
+                    <div class="lab-footer">
+                        <a href="https://github.com/iazizlo/cpit405-assignment3" target="_blank" class="lab-link">GitHub <i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
     </main>
 
     <footer>
         <p>&copy; 2026 Abdulaziz Almutairi | CPIT-405 portfolio</p>
     </footer>
+
+    <script>
+        // Scroll reveal using IntersectionObserver
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 
